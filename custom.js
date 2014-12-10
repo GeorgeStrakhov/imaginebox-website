@@ -1,6 +1,5 @@
 console.log('Hey, looks like you like looking behind the curtain! \n\nThis is great. Yes, this is using reveal.js library and was mostly created by slides.com. \n\nNow, if you are curious and a hacker by nature - we may have more in common than you think. Ping us at hello@ten-x.red and may be we can work together on something interesting.');
 
-var justDown = false;
 
 var clients = [
   {
@@ -9,9 +8,10 @@ var clients = [
   }
 ];
 
+var justDown = false;
+
 //go to next slide
-$('.reveal').on('click', function(e) {
-  e.preventDefault();
+var goToNext = function(){
   if(!justDown) {
     Reveal.down();
     justDown = true;
@@ -19,6 +19,20 @@ $('.reveal').on('click', function(e) {
       justDown = false;
     },250);
   }
+};
+
+//on click anywhere on slides - go to next slide
+$('.reveal').on('click', function(e) {
+  e.preventDefault();
+  goToNext();
+});
+
+//listen to reveal sldiechange to avoid double clicks etc.
+Reveal.addEventListener( 'slidechanged', function( event ) {
+    justDown = true;
+    setTimeout(function(){
+      justDown = false;
+    },250);
 });
 
 //request
@@ -66,7 +80,7 @@ $('.client-login-link').on('click', function(e) {
         window.location.href="http://"+cname+".imaginebox.red";
         return;
       } else {
-        vex.dialog.alert('Looks like your company is doesn\'t have an ImagineBox yet. <br /> Contact us at <a href="mailto:iwantone@imaginebox.red" target="_blank">iwantone@imaginebox.red</a> to request yours.');
+        vex.dialog.alert('Looks like your company doesn\'t have an ImagineBox yet. <br /> Contact us at <a href="mailto:iwantone@imaginebox.red" target="_blank">iwantone@imaginebox.red</a> to request yours.');
       }
     }
   });
